@@ -25,6 +25,8 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { CategoryPageComponent } from './category-page/category-page.component';
 import { ProductPageComponent } from './product-page/product-page.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+//import {LoginComponent} from './auth/login/login.component';
+
 
 @NgModule({
   declarations: [
@@ -32,7 +34,8 @@ import { NotFoundComponent } from './not-found/not-found.component';
     NavbarComponent,
     CategoryPageComponent,
     ProductPageComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    //LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -42,7 +45,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
     HttpClientModule,
     RouterModule.forRoot([
       {
-        path: 'category/:thecategory',
+        path: 'category',
         component: CategoryPageComponent
       },
       {

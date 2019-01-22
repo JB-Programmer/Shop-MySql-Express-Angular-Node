@@ -17,8 +17,8 @@ export class DataService {
     return this.http.get('http://localhost:4040/products');
   }
 
-  getProductsByCatName(catName): Observable<any> {
-    return this.http.get('http://localhost:4040/cat/'+catName);
+  getProductsByCatName(catname): Observable<any> {
+    return this.http.get('http://localhost:4040/category/?catname=' + catname);
   }
 
 

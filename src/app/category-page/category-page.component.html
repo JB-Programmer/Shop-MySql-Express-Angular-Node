@@ -1,22 +1,26 @@
 <h1 class='text-center'>Category Page Template: app-category-page</h1>
 <!-- TODO NGIF exists productsByCat else, there is no products in this categori -->
 <div class="container category-products-block">
+  <div *ngIf="productsByCat">
+    <div>
+      <div  class='centercenter' *ngFor="let product of productsByCat">
+          <div class="product-card col-sm-3 card m-3">
 
-  <div>
-    <div  class='centercenter' *ngFor="let product of productsByCat">
-        <div class="product-card col-sm-3 card m-3">
-
-              <img class="card-img-top main-product-image" src="{{product.image}}" alt="Card image cap">
-              <div class="card-body">
-                <div class="bodyNoBtn">
-                  <h5 class="card-title">{{product.name}}</h5>
-                  <div class="productId">sku: {{product.id}}</div>
-                  <p class="card-text">{{product.description}}</p>
+                <img class="card-img-top main-product-image" src="{{product.image}}" alt="Card image cap">
+                <div class="card-body">
+                  <div class="bodyNoBtn">
+                    <h5 class="card-title">{{product.name}}</h5>
+                    <div class="productId">sku: {{product.id}}</div>
+                    <p class="card-text">{{product.description}}</p>
+                  </div>
+                  <div>
+                    <label>Quantity</label>
+                    <input type="number" [(ngModel)]="product.quantity">
+                  </div>
+                  <button (click)="addToCart(product)" class="btn btn-success">Add to cart</button>
                 </div>
-                <a href="#" class="btn btn-primary">Add to cart</a>
-              </div>
-        </div>
+          </div>
+      </div>
     </div>
   </div>
-
 </div>

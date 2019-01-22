@@ -41,7 +41,7 @@ con.connect((err)=>{
   if(err){
     console.log("Connection to DB fail");
     throw err;
-  
+
   }else{
     console.log("Connected successfully to DB");
   }
@@ -56,7 +56,7 @@ app.use(expressValidator());
 app.use(express.static('src'));
 
 
-app.use(session({secret:'chaim', saveUninitialized:true, resave:true, 
+app.use(session({secret:'chaim', saveUninitialized:true, resave:true,
                   cookie: {
                             expires: new Date(Date.now() + 1000000),
                             maxAge: 5000000}
@@ -77,11 +77,13 @@ app.get('/', (req, res)=>{
 //Login Control
 //ATTENTION, IT IS CASE SENSITIVE
 app.route('/login').post((req,res)=>{
+  //Admin-> Username: Chaim  Password:1234
+  //Client -> Username:    Password:1234
   console.log("User is trying to login");
   console.log(req.body.username);
   console.log(req.body.password);
   console.log(req.body.date);
-  //To do pass to MD5 before 
+  //To do pass to MD5 before
   con.query(`SELECT * FROM users WHERE username='${req.body.username}' && password='${req.body.password}'`, (err,row)=>{
     if(err){
       console.log(err);
@@ -161,11 +163,11 @@ app.route('/existuser').post((req,res)=>{
 
 //Insert new user
 app.route('/user').post((req,res)=>{
-  con.query(`INSERT INTO users (name, surname, username, password, role, email, zehut, street, city) 
+  con.query(`INSERT INTO users (name, surname, username, password, role, email, zehut, street, city)
              VALUES
              ("${req.body.name}", "${req.body.surname}", "${req.body.username}", "${req.body.password}", "user",
              "${req.body.email}", "${req.body.zehut}", "${req.body.street}", "${req.body.city}")`, (err,body)=>{
-                
+
                 if(err){
                   console.log(err);
                   console.log("Error INSERTING new user into DB");
@@ -224,7 +226,7 @@ app.route('/products').get((req, res)=>{
     }
 
   });
-  
+
 
 });
 
@@ -232,8 +234,9 @@ app.route('/products').get((req, res)=>{
 
 
 //Getting products of a category
-app.route('/cat/:catname').get((req, res)=>{
-  const reqCategory = req.params['catname'];
+app.route('/category').get((req, res)=>{
+  //const reqCategory = req.params['catname'];
+  const reqCategory = req.query.catname;
   console.log("Client asked for "+reqCategory+" Kippot.");
 
   //con.query(`select * from products where category=`)
@@ -249,7 +252,7 @@ app.route('/cat/:catname').get((req, res)=>{
     }
 
   });
-  
+
 
 });
 
@@ -276,8 +279,8 @@ app.route('/product/:id').get((req, res)=>{
 app.route('/newproduct').post((req, res)=>{
   const bodyreq = req.body;
   console.log(bodyreq);
-  con.query(`INSERT INTO products (name, price, category, description, image) values 
-            ('${req.body.name}', '${req.body.price}', '${req.body.category}','${req.body.description}','${req.body.image}')`, 
+  con.query(`INSERT INTO products (name, price, category, description, image) values
+            ('${req.body.name}', '${req.body.price}', '${req.body.category}','${req.body.description}','${req.body.image}')`,
             (err)=>{
     if(err){
       console.log(err);

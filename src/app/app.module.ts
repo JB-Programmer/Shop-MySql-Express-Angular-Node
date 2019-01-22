@@ -42,7 +42,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
     HttpClientModule,
     RouterModule.forRoot([
       {
-        path: 'cat/:catname',
+        path: 'category/:thecategory',
         component: CategoryPageComponent
       },
       {

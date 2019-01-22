@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, from } from 'rxjs';
 import { DataService } from './../../services/data.service';
+import { ActivatedRoute } from "@angular/router";
+
+
 
 
 
@@ -9,20 +12,21 @@ import { DataService } from './../../services/data.service';
   templateUrl: './category-page.component.html',
   styleUrls: ['./category-page.component.css']
 })
-
 export class CategoryPageComponent implements OnInit {
 
   productsByCat: any;
-  category:any;
-  constructor(private getdata: DataService) { }
+  categoryps;
+  constructor(private getdata: DataService, private theRoute: ActivatedRoute ) { }
 
+  //I think that it will be better to continue with the same category without changing the component...
   ngOnInit() {
-    this.getProdByCatName('Suede');
+    this.theRoute.paramMap.subscribe(params => {
+      this.categoryps = params.get('thecategory');
+    });
+    this.getProdByCatName(this.categoryps);
   }
 
-
-
-  getProdByCatName(category) {
+    getProdByCatName(category) {
     this.getdata.getProductsByCatName(category)
     .subscribe(
       res => {

@@ -1,9 +1,22 @@
-<p>
-  category-page works!
-</p>
+<h1 class='text-center'>Category Page Template: app-category-page</h1>
+<!-- TODO NGIF exists productsByCat else, there is no products in this categori -->
+<div class="container category-products-block">
 
-<div *ngFor="let product of productsByCat">
-    <h2>Name of the product</h2>
-    <h5>{{product.name}}</h5>
+  <div>
+    <div  class='centercenter' *ngFor="let product of productsByCat">
+        <div class="product-card col-sm-3 card m-3">
+
+              <img class="card-img-top main-product-image" src="{{product.image}}" alt="Card image cap">
+              <div class="card-body">
+                <div class="bodyNoBtn">
+                  <h5 class="card-title">{{product.name}}</h5>
+                  <div class="productId">sku: {{product.id}}</div>
+                  <p class="card-text">{{product.description}}</p>
+                </div>
+                <a href="#" class="btn btn-primary">Add to cart</a>
+              </div>
+        </div>
+    </div>
+  </div>
 
 </div>

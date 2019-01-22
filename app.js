@@ -1,3 +1,4 @@
+
 const express = require("express");
 const cors = require("cors");
 var cookieParser = require('cookie-parser');
@@ -335,10 +336,6 @@ app.route('*').get((req,res)=>{
     root: './src/'
   });
 })
-
-
-
-
 
 app.listen(4040,()=>{
   console.log("Listening app.js in 4040");

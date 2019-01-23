@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, from } from 'rxjs';
 import { DataService } from './../../services/data.service';
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute } from '@angular/router';
 
 
 
@@ -20,12 +20,11 @@ export class CategoryPageComponent implements OnInit {
 
   }
 
-  //I think that it will be better to continue with the same category without changing the component...
   ngOnInit() {
     this.theRoute.queryParams.subscribe(params => {
       this.categoryps = params['catname'];
       this.getProdByCatName(this.categoryps);
-      });
+    });
 
   }
 

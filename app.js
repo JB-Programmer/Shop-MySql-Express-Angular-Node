@@ -77,8 +77,8 @@ app.get('/', (req, res)=>{
 //Login Control
 //ATTENTION, IT IS CASE SENSITIVE
 app.route('/login').post((req,res)=>{
-  //Admin-> Username: Chaim  Password:1234
-  //Client -> Username:    Password:1234
+  //Admin-> Username: chaim  Password:1234
+  //Client -> Username: eli  Password:1234
   console.log("User is trying to login");
   console.log(req.body.username);
   console.log(req.body.password);
@@ -162,7 +162,8 @@ app.route('/existuser').post((req,res)=>{
 })
 
 //Insert new user
-app.route('/user').post((req,res)=>{
+app.route('/signupuser').post((req,res)=>{
+  /* TODO USE MD5 */
   con.query(`INSERT INTO users (name, surname, username, password, role, email, zehut, street, city)
              VALUES
              ("${req.body.name}", "${req.body.surname}", "${req.body.username}", "${req.body.password}", "user",

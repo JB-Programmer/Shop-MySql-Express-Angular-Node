@@ -17,15 +17,16 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 
 
-//Services
+// Services
 import { DataService } from '../services/data.service';
 
-//Components
+// Components
 import { NavbarComponent } from './navbar/navbar.component';
 import { CategoryPageComponent } from './category-page/category-page.component';
 import { ProductPageComponent } from './product-page/product-page.component';
 import { NotFoundComponent } from './not-found/not-found.component';
-//import {LoginComponent} from './auth/login/login.component';
+import { LoginComponent } from './login/login.component';
+import { NewUserComponent } from './new-user/new-user.component';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import { NotFoundComponent } from './not-found/not-found.component';
     CategoryPageComponent,
     ProductPageComponent,
     NotFoundComponent,
-    //LoginComponent
+    LoginComponent,
+    NewUserComponent,
   ],
   imports: [
     BrowserModule,
@@ -51,6 +53,14 @@ import { NotFoundComponent } from './not-found/not-found.component';
       {
         path: 'product/:id',
         component: ProductPageComponent
+      },
+      {
+        path: 'login',
+        component: LoginComponent
+      },
+      {
+        path: 'newuser',
+        component: NewUserComponent
       },
       {
         path: '*',

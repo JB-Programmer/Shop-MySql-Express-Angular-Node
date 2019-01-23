@@ -1,0 +1,28 @@
+<div id="LoginForm" class="container">
+  <div class="login-form">
+  <div class="main-div">
+      <div class="panel">
+        <h1>Login to start buying</h1>
+     <p>Please enter your username and password</p>
+     </div>
+      <form (submit)="onLogin(loginForm)" #loginForm="ngForm" id="Login">
+
+          <div class="form-group">
+                <input type="text" name="username" ngModel class="form-control" id="inputUsername" placeholder="Username" #usernameInput="ngModel" required>
+          </div>
+
+          <div class="form-group">
+
+              <input type="current-password" name="password" ngModel class="form-control" id="inputPassword" placeholder="Password" #passwordInput="ngModel" required>
+
+          </div>
+
+          <button type="submit" class="btn btn-primary">Login</button>
+
+      </form>
+      </div>
+
+  </div></div>
+
+
+

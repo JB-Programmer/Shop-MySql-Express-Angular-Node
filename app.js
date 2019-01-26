@@ -8,13 +8,18 @@ var path = require('path')
 var fs = require('fs');
 var expressValidator = require('express-validator');
 var upload = require('express-fileupload');
+var morgan = require('morgan');
 var session = require('express-session');
 
-
+//Not used finally
+/*
+const jwt = require("jsonwebtoken");
+const checkAuth = require('./check-auth');
+*/
 
 
 var app = express();
-
+app.use(morgan('combined'));
 app.use(cookieParser());
 app.use(cors());
 
@@ -24,9 +29,7 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 app.use(express.json());
 
-
-
-
+app.use(expressValidator());
 
 //Connection to DB
 var con = mysql.createConnection({
@@ -49,24 +52,41 @@ con.connect((err)=>{
 
 });
 
-
-app.use(expressValidator());
-
 //I dont know if it will be necessary
 app.use(express.static('src'));
 
 
-app.use(session({secret:'chaim', saveUninitialized:true, resave:true,
-                  cookie: {
-                            expires: new Date(Date.now() + 1000000),
-                            maxAge: 5000000}
+
+app.use(session(
+                {secret:'chaim',
+                 saveUninitialized:false,
+                 resave:false,
+                cookie: {
+                    secure: true,
+                    expires: new Date(Date.now() + 1000000),
+                    maxAge: 5000000}
                 }
 ));
 
 
+//Root
+/*
+app.get('/salchichas', (req, res)=>{
+  console.log(req.cookies);
+  console.log('-------');
+  console.log(req.session);
+  res.send('Our first cookie trying');
+
+
+});
+*/
 
 //Root
 app.get('/', (req, res)=>{
+  console.log(req.cookies);
+  console.log('-------');
+  console.log(req.session);
+  //res.send(req.cookies);
   res.render('/index.html');
 
 });
@@ -77,33 +97,47 @@ app.get('/', (req, res)=>{
 //Login Control
 //ATTENTION, IT IS CASE SENSITIVE
 app.route('/login').post((req,res)=>{
+  //TODO UNHASH the password via bcrypt si es que funciona: 101.4
   //Admin-> Username: chaim  Password:1234
   //Client -> Username: eli  Password:1234
   console.log("User is trying to login");
-  console.log(req.body.username);
+  console.log(req.body.email);
   console.log(req.body.password);
   console.log(req.body.date);
   //To do pass to MD5 before
-  con.query(`SELECT * FROM users WHERE username='${req.body.username}' && password='${req.body.password}'`, (err,row)=>{
+  con.query(`SELECT * FROM users WHERE email='${req.body.email}' && password='${req.body.password}'`, (err,row)=>{
     if(err){
       console.log(err);
       console.log("Error in function select");
-      res.status(400).send(err);
+      res.status(401).send(err);
     }else{
       if(row.length==1){
         //Assign values to the object session
-        //req.session.name = row[0].name;
+        req.session.name = row[0].name;
+       /* Not neccessry with express-session
+        const token = jwt.sign(
+              {email: req.body.username, userId: row[0].id},
+              'secret_this_should_be_longer',
+              {expiresIn: "1h"}); //One hour validate of the token
+
+        console.log("User has been authentified and token sent");
+        res.status(200).json({
+             token:token,
+             message: 'Usen has been authentified and token sent'
+          });
+        */
         req.session.username = row[0].username;
         req.session.role = row[0].role;
         req.session.authenticated = true;
         req.session.date = req.body.date;
-        console.log("User has been authentified");
 
-        res.status(200).send(row[0]);
-        //res.send(req.session.username);
+        console.log(req.session.role);
+        //res.status(200).send(row[0]);
+        res.status(201).send(req.session);
       }else{
+        console.log(row.lenght);
         console.log("User/password not valid");
-        res.status(400).send('User/password not valid');
+        res.status(201).send('User/password not valid');
       }
     }
   })
@@ -157,13 +191,12 @@ app.route('/existuser').post((req,res)=>{
     }
 
   })
-
-
 })
 
 //Insert new user
 app.route('/signupuser').post((req,res)=>{
-  /* TODO USE MD5 */
+  // TODO USE MD5
+  //Todo, add control email and teudat zehut to login
   con.query(`INSERT INTO users (name, surname, username, password, role, email, zehut, street, city)
              VALUES
              ("${req.body.name}", "${req.body.surname}", "${req.body.username}", "${req.body.password}", "user",
@@ -191,11 +224,10 @@ app.route('/signupuser').post((req,res)=>{
 
 
 
-
 //PRODUCTS/CATEGORIES QUERYS
 //Getting all categories
-app.route('/cat').get((req,res)=>{
-  con.query(`SELECT categoryName FROM categories`, (err,data)=>{
+app.route('/categoriesnames').get((req,res)=>{
+  con.query(`SELECT * FROM categories`, (err,data)=>{
     if(err){
       console.log(err);
       console.log("Error getting all categories");
@@ -302,6 +334,62 @@ app.route('/newproduct').post((req, res)=>{
 
 
 
+app.post('/producttocart', (req, res) => {
+  /*
+  if(req.session.cartId){
+    const cartid= req.session.cartId;
+  }else{
+    const cartid = 1;
+
+  }*/
+  const cartid = '1';
+  const productId = req.body.productid;
+  const quantity = req.body.quantity;
+  /*
+  con.query(`SELECT price FROM products WHERE id=${productId}`, (err, precio)=>{
+    if(err){
+      console.log("Error Getting the price");
+    }else {
+      console.log(precio[0].price);
+      const theprice = precio[0].price;
+      return theprice;
+    }
+  });
+
+  */
+  //console.log(precio);
+  const subtotal = req.body.quantity * 30;
+  con.query(`SELECT * FROM cartelements WHERE cartId='${cartid}' AND productid='${productId}'`, (err, rows) => {
+      if (err) {
+          console.log(err);
+
+      } else if (rows.length == 0) {
+          con.query(`INSERT INTO cartelements (cartId, productid, quantity, subtotal) VALUES(${cartid}, ${productId}, ${quantity}, ${subtotal})`, (err) => {
+              if (err){
+                  console.log("Product wasnt inserted into cart");
+                  res.status(400);
+              } else {
+                  console.log("Cart has been successfully updated" + productId);
+                  res.status(200).send();
+              }
+          })
+      } else if (rows.length != 0){
+          con.query(`UPDATE cartelements SET quantity=${quantity}, subtotal=${subtotal}  WHERE cartId=${cartid} AND productid=${productId}`, (err, rows) => {
+              if (err) {
+                  console.log(err);
+                  res.status(400);
+
+              } else {
+                  console.log("Cart updated successfuly");
+                  res.status(200).send();
+              }
+          })
+      }
+  });
+});
+
+
+
 //Updating an product
 app.route('/product/:id').put((req,res)=>{
   const prodToUpdate = req.params['id'];
@@ -327,12 +415,19 @@ app.route('/product/:id').put((req,res)=>{
 
 
 //Deleting a product
-app.route('cat/:id').delete((req,res)=>{
+app.route('/deleteproduct/:id').delete((req,res)=>{
   const prodToDelete = req.params['id'];
   //The deleteproceess
 
   res.status(204);
 
+});
+
+app.post('/logout', (req, res) => {
+  console.log('Logged out');
+  req.session.destroy();
+  res.status(200).json({mensaje: "THe user has been logged out"});
+  res.end();
 });
 
 app.route('*').get((req,res)=>{

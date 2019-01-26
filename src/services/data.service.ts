@@ -21,6 +21,9 @@ export class DataService {
     return this.http.get('http://localhost:4040/category/?catname=' + catname);
   }
 
-
+  getCategoriesNames(){
+    console.log('Get Categories was called');
+    return this.http.get('http://localhost:4040/categoriesnames')
+  }
 
 }

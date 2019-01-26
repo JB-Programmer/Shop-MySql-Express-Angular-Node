@@ -29,46 +29,15 @@ export class NewUserComponent implements OnInit {
 
 
   onSignUp(form: NgForm) {
-    if(form.invalid){
+    if (form.invalid){
       console.log('Form is invalid');
       return;
-    }else{
+    } else {
       console.log(form.value);
       // tslint:disable-next-line:max-line-length
-      this.authService.createUser(form.value.thename, form.value.thesurname, form.value.theusername, form.value.thepassword, form.value.theemail, form.value.zehut, form.value.street, form.value.city);
+      this.authService.createUser(form.value.thename, form.value.thesurname, form.value.theusername, form.value.thepassword, form.value.theemail, form.value.thezehut, form.value.thestreet, form.value.thecity);
     }
 
   }
-
-
-
-  /*
-  onSignup(form: NgForm) {
-    if(form.invalid){
-      return;
-    }
-
-       this.fullUserData = {
-        name: this.thename,
-        surname: this.thesurname,
-        username: this.theusername,
-        password: this.thepassword,
-        email: this.theemail,
-        zehut: this.thezehut,
-        street: this.thestreet,
-        city: this.thecity,
-       }
-
-      this.authService.createUser(this.fullUserData).subscribe(res => {
-        console.log('User created successfully');
-      });
-
-      //console.log(this.smalldata.name);
-
-
-   }
-   */
-
-
 
 }

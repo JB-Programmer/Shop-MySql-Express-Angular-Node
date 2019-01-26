@@ -27,6 +27,7 @@ import { ProductPageComponent } from './product-page/product-page.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { LoginComponent } from './login/login.component';
 import { NewUserComponent } from './new-user/new-user.component';
+import { AddProductComponent } from './add-product/add-product.component';
 
 
 @NgModule({
@@ -38,6 +39,7 @@ import { NewUserComponent } from './new-user/new-user.component';
     NotFoundComponent,
     LoginComponent,
     NewUserComponent,
+    AddProductComponent,
   ],
   imports: [
     BrowserModule,
@@ -46,6 +48,7 @@ import { NewUserComponent } from './new-user/new-user.component';
     ReactiveFormsModule,
     HttpClientModule,
     RouterModule.forRoot([
+
       {
         path: 'category',
         component: CategoryPageComponent
@@ -63,8 +66,12 @@ import { NewUserComponent } from './new-user/new-user.component';
         component: NewUserComponent
       },
       {
+        path: 'addproduct',
+        component: AddProductComponent
+      },
+      {
         path: '*',
-        component: AppComponent
+        component: LoginComponent
       },
     ]),
   ],

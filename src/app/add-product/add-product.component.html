@@ -1,0 +1,31 @@
+<div id="AddProduct" class="container">
+  <div class="login-form">
+  <div class="main-div">
+      <div class="panel">
+        <h1>Add Product</h1>
+     <p>Admin - Fill in all the info</p>
+     </div>
+      <form id="Login" ngNativeValidate>
+          <div class="form-group">
+              <input type="text" name="productName"  [(ngModel)]="theproductname" class="form-control" id="inputtheproductName" placeholder="Product Name" #productNameInput="ngModel" required>
+          </div>
+
+          <div class="form-group">
+            <input type="text" name="thecategory"  [(ngModel)]="thecategory" ngModel class="form-control" id="inputthecategory" placeholder="Category" #thecategoryInput="ngModel" required>
+          </div>
+
+          <div class="form-group">
+                <input type="text-area" rows="3" name="thedescription" [(ngModel)]="thedescription" autocomplete="thedescription" ngModel class="form-control" id="inputthedescription" placeholder="Description" #thedescriptionInput="ngModel" required>
+          </div>
+
+          <div class="form-group">
+            <input type="number" name="theprice"  [(ngModel)]="theprice" ngModel class="form-control" id="inputtheprice" placeholder="Price" #thepriceInput="ngModel" required>
+          </div>
+
+          <button (click)="onAddProduct()" type="submit" class="btn btn-success">Create Product +</button>
+
+      </form>
+      </div>
+      {{ productName }}
+  </div></div>
+

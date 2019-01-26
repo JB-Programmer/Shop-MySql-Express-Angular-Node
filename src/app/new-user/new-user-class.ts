@@ -1,3 +1,4 @@
+// Finally I did an interface instead a class
 export interface UserDataFull {
          name: string;
          surname: string;
